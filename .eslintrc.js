@@ -9,11 +9,12 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    "comma-dangle": ["off", "never"], //是否允许对象中出现结尾逗号
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'generator-star-spacing': 'off',
     'no-mixed-operators': 0,
-    'vue/max-attributes-per-line': [
-      2,
+    "space-before-function-paren": 0,
+    'vue/max-attributes-per-line': [0,
       {
         'singleline': 5,
         'multiline': {
@@ -22,6 +23,13 @@ module.exports = {
         }
       }
     ],
+    "vue/html-indent": ["off", 2, {
+      "attribute": 1,
+      "baseIndent": 1,
+      "closeBracket": 0,
+      "alignAttributesVertically": true,
+      "ignores": []
+    }],
     'vue/attribute-hyphenation': 0,
     'vue/html-self-closing': 0,
     'vue/component-name-in-template-casing': 0,
@@ -32,7 +40,7 @@ module.exports = {
     'vue/no-use-v-if-with-v-for': 0,
     'vue/html-closing-bracket-newline': 0,
     'vue/no-parsing-error': 0,
-    'no-tabs': 0,
+    "no-tabs": "off",
     'quotes': [
       2,
       'single',
@@ -41,8 +49,7 @@ module.exports = {
         'allowTemplateLiterals': true
       }
     ],
-    'semi': [
-      2,
+    'semi': [0,
       'never',
       {
         'beforeStatementContinuationChars': 'never'
@@ -56,7 +63,7 @@ module.exports = {
       }
     ],
     'template-curly-spacing': 'off',
-    'indent': 'off'
+    'indent': 0
   },
   parserOptions: {
     parser: 'babel-eslint'
