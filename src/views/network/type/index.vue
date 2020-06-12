@@ -4,23 +4,16 @@
       <a-form layout="inline">
         <div style="padding-bottom: 11px;">
           <span>组件类型：</span>
-          <a-checkable-tag
-            class="tagSelect"
-            v-for="(item, index) in supports"
-            :key="item.id"
-            v-model="item.checked"
-            @change="handleChange(index, $event)"
-          >
+          <a-checkable-tag class="tagSelect" v-for="(item, index) in supports" :key="item.id" v-model="item.checked"
+            @change="handleChange(index, $event)">
             {{ item.name }}
           </a-checkable-tag>
         </div>
         <div style="">
           <span>其它选项：</span>
           <a-form-item :label-col="{ span: 4 }" :wrapper-col="{ span: 8 }" label="配置名称:">
-            <a-input
-              v-decorator="['username', { rules: [{ required: true, message: 'Please input your name' }] }]"
-              placeholder="Please input your name"
-            />
+            <a-input v-decorator="['username', { rules: [{ required: true, message: 'Please input your name' }] }]"
+              placeholder="Please input your name" />
           </a-form-item>
         </div>
       </a-form>
@@ -73,113 +66,126 @@
   </page-header-wrapper>
 </template>
 <script>
-import { getSupports } from '../../../api/network'
-export default {
-  data() {
-    return {
-      checked1: true,
-      checked2: true,
-      checked3: true,
-      supports: []
-    }
-  },
-  updated() {},
-  mounted() {
-    this.getSupports()
-  },
-  methods: {
-    getSupports() {
-      getSupports()
-        .then(res => {
-          this.supports = res.result.map(v => {
-            return {
-              ...v,
-              checked: true
-            }
-          })
-        })
-        .catch(() => {})
+  import { getSupports } from '../../../api/network'
+  export default {
+    data() {
+      return {
+        checked1: true,
+        checked2: true,
+        checked3: true,
+        supports: []
+      }
     },
-    handleChange(index, checked) {
-      console.log('supports', this.supports)
+    updated() { },
+    mounted() {
+      this.getSupports()
+    },
+    methods: {
+      getSupports() {
+        getSupports()
+          .then(res => {
+            this.supports = res.result.map(v => {
+              return {
+                ...v,
+                checked: true
+              }
+            })
+          })
+          .catch(() => { })
+      },
+      handleChange(index, checked) {
+        console.log('supports', this.supports)
+      }
     }
   }
-}
 </script>
 <style lang="less" scoped>
-.context {
-  display: flex;
-  flex-direction: column;
-  margin-top: 2px;
-}
-.network-card-list {
-  height: 100%;
-  background-color: black;
-}
-.filterCardList {
-  margin-bottom: -24px;
-  background-color: aqua;
-  :global {
-    .ant-card-meta-content {
-      margin-top: 0;
-    }
-    // disabled white space
-    .ant-card-meta-avatar {
-      font-size: 0;
+  .context {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+  }
+
+  .network-card-list {
+    height: 100%;
+    background-color: black;
+  }
+
+  .filterCardList {
+    margin-bottom: -24px;
+    background-color: aqua;
+
+    :global {
+      .ant-card-meta-content {
+        margin-top: 0;
+      }
+
+      // disabled white space
+      .ant-card-meta-avatar {
+        font-size: 0;
+      }
+
+      .ant-list .ant-list-item-content-single {
+        max-width: 100%;
+      }
     }
 
-    .ant-list .ant-list-item-content-single {
-      max-width: 100%;
-    }
-  }
-  .cardInfo {
-    margin-top: 16px;
-    margin-left: 40px;
-    zoom: 1;
-    &::before,
-    &::after {
-      display: table;
-      content: ' ';
-    }
-    &::after {
-      clear: both;
-      height: 0;
-      font-size: 0;
-      visibility: hidden;
-    }
-    & > div {
-      position: relative;
-      float: left;
-      width: 50%;
-      text-align: left;
-      p {
-        margin: 0;
-        font-size: 12px;
-        line-height: 20px;
-        font-weight: 500;
+    .cardInfo {
+      margin-top: 16px;
+      margin-left: 40px;
+      zoom: 1;
+
+      &::before,
+      &::after {
+        display: table;
+        content: ' ';
       }
-      p:first-child {
-        margin-bottom: 4px;
-        font-size: 12px;
-        line-height: 20px;
+
+      &::after {
+        clear: both;
+        height: 0;
+        font-size: 0;
+        visibility: hidden;
+      }
+
+      &>div {
+        position: relative;
+        float: left;
+        width: 50%;
+        text-align: left;
+
+        p {
+          margin: 0;
+          font-size: 12px;
+          line-height: 20px;
+          font-weight: 500;
+        }
+
+        p:first-child {
+          margin-bottom: 4px;
+          font-size: 12px;
+          line-height: 20px;
+        }
       }
     }
   }
-}
-.xx {
-  .ant-input-number {
-    width: 295px;
+
+  .xx {
+    .ant-input-number {
+      width: 295px;
+    }
   }
-}
-.newButton {
-  width: 100%;
-  height: 170px;
-  font-size: large;
-  font-weight: 400;
-}
-.ant-tag {
-  margin-right: 24px;
-  padding: 0 8px;
-  font-size: 14px;
-}
+
+  .newButton {
+    width: 100%;
+    height: 170px;
+    font-size: large;
+    font-weight: 400;
+  }
+
+  .ant-tag {
+    margin-right: 24px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
 </style>
