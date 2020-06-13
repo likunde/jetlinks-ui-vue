@@ -19,25 +19,32 @@
       </a-form>
     </a-card>
     <a-card style="margin-top: 12px;">
-      <a-list item-layout="horizontal">
-        <a-list-item>
-          <a-card style="width: 380px;height:170px">
-            <a-card-meta title="TCP">
-              <a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+      <a-list item-layout="horizontal" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }" :data-source="conList">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a-card :bodyStyle="{paddingBottom:20}" hoverable>
+            <a-card-meta :title="item.name">
+              <a-avatar slot="avatar" size="small" :src="item.avatar" />
             </a-card-meta>
-            <div className="{styles.cardItemContent}">
-              <div className="{styles.cardInfo}">
+            <div class="cardItemContent">
+              <div class="cardInfo">
                 <div>
                   <p>组件类型</p>
-                  <p>{item.type.name}</p>
+                  <p>{{ item.type.name }}</p>
                 </div>
                 <div>
                   <p>启动状态</p>
-                  <p></p>
+                  <p style="color:red">
+                    <a-popconfirm :title="item.state.value==='disabled'? '确认启动' : '确认停止'" @confirm=" alter()">
+                      <span>
+                        <a-switch size="small" :checked="item.state.value==='disabled'?false:true">
+                        </a-switch>
+                      </span>
+                    </a-popconfirm>
+                    </a-popconfirm="alert()">
+                  </p>
                 </div>
               </div>
             </div>
-
             <template slot="actions" class="ant-card-actions">
               <a-icon key="download" type="download" />
               <a-icon key="edit" type="edit" />
@@ -45,40 +52,28 @@
               <a-icon key="delete" type="delete" />
             </template>
           </a-card>
-          <a-card style="width: 380px;height:170px">
-            <p>card content</p>
-            <p>card content</p>
-            <p>card content</p>
-          </a-card>
-          <a-card style="width: 380px;height:170px">
-            <p>card content</p>
-            <p>card content</p>
-            <p>card content</p>
-          </a-card>
-          <a-card style="width: 380px;height:170px">
-            <p>card content</p>
-            <p>card content</p>
-            <p>card content</p>
-          </a-card>
         </a-list-item>
       </a-list>
     </a-card>
   </page-header-wrapper>
 </template>
 <script>
-  import { getSupports } from '../../../api/network'
+  import { getSupports, getConfig } from '../../../api/network'
+  import encodeQueryParam from '../../../utils/encodeParam'
   export default {
     data() {
       return {
         checked1: true,
         checked2: true,
         checked3: true,
-        supports: []
+        supports: [],
+        conList: []
       }
     },
     updated() { },
     mounted() {
       this.getSupports()
+      this.getConfigList()
     },
     methods: {
       getSupports() {
@@ -93,99 +88,46 @@
           })
           .catch(() => { })
       },
+      getConfigList() {
+        const prm = {
+          paging: false,
+          sorts: { field: 'id', order: 'desc' },
+          terms: {
+            type$IN: '',
+            name$LIKE: '',
+          },
+        }
+        getConfig(encodeQueryParam(prm)).then(res => {
+          console.log(res)
+          this.conList = res.result
+        }).catch(() => {
+
+        })
+      },
       handleChange(index, checked) {
         console.log('supports', this.supports)
       }
     }
   }
 </script>
-<style lang="less" scoped>
-  .context {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2px;
+<style scoped>
+  .cardItemContent {}
+
+  .cardInfo {
+    margin-top: 16px;
+    margin-left: 0 px;
+    zoom: 1;
+
   }
 
-  .network-card-list {
-    height: 100%;
-    background-color: black;
+  .cardInfo div {
+    margin: 0;
+    padding: 0;
   }
 
-  .filterCardList {
-    margin-bottom: -24px;
-    background-color: aqua;
+  .cardInfo p {
 
-    :global {
-      .ant-card-meta-content {
-        margin-top: 0;
-      }
-
-      // disabled white space
-      .ant-card-meta-avatar {
-        font-size: 0;
-      }
-
-      .ant-list .ant-list-item-content-single {
-        max-width: 100%;
-      }
-    }
-
-    .cardInfo {
-      margin-top: 16px;
-      margin-left: 40px;
-      zoom: 1;
-
-      &::before,
-      &::after {
-        display: table;
-        content: ' ';
-      }
-
-      &::after {
-        clear: both;
-        height: 0;
-        font-size: 0;
-        visibility: hidden;
-      }
-
-      &>div {
-        position: relative;
-        float: left;
-        width: 50%;
-        text-align: left;
-
-        p {
-          margin: 0;
-          font-size: 12px;
-          line-height: 20px;
-          font-weight: 500;
-        }
-
-        p:first-child {
-          margin-bottom: 4px;
-          font-size: 12px;
-          line-height: 20px;
-        }
-      }
-    }
-  }
-
-  .xx {
-    .ant-input-number {
-      width: 295px;
-    }
-  }
-
-  .newButton {
-    width: 100%;
-    height: 170px;
-    font-size: large;
-    font-weight: 400;
-  }
-
-  .ant-tag {
-    margin-right: 24px;
-    padding: 0 8px;
-    font-size: 14px;
+    display: inline;
+    margin: 0 10px;
   }
 </style>
